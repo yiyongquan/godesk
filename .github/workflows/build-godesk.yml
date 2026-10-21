@@ -1,0 +1,12 @@
+name: 🚀 一键编译 GoDesk 纯净客户端
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-godesk-build:
+    uses: ./.github/workflows/flutter-build.yml
+    secrets: inherit
+    with:
+      upload-artifact: true
+      upload-tag: "release"
