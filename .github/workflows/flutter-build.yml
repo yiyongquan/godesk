@@ -11,14 +11,11 @@ on:
         type: string
         default: "release"
         description: "Release tag"
-  workflow_call:
-    inputs:
-      upload-artifact:
-        type: boolean
-        default: true
-      upload-tag:
-        type: string
-        default: "nightly"
+
+permissions:
+  contents: write
+  actions: write
+  packages: write
 
 # NOTE: F-Droid builder script 'flutter/build_fdroid.sh' reads environment
 # variables from this workflow!
