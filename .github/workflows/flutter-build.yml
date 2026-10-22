@@ -1,4 +1,4 @@
-name: 🚀 一键编译 GoDesk 纯净客户端
+name: Build GoDesk Client (一键编译纯净版)
 
 on:
   workflow_dispatch:
