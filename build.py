@@ -779,6 +779,7 @@ def build_flutter_deb(version, features):
     if ships_so:
         retarget_control_to_drm_variant()
     system2('cp -a ../res/DEBIAN/* tmpdeb/DEBIAN/')
+    system2('chmod 755 tmpdeb/DEBIAN/*')
     md5_file_folder("tmpdeb/")
     system2('dpkg-deb -b tmpdeb rustdesk.deb;')
 
@@ -920,6 +921,7 @@ def build_deb_from_folder(version, binary_folder, want_drm=False):
     if want_drm:
         retarget_control_to_drm_variant()
     system2('cp -a ../res/DEBIAN/* tmpdeb/DEBIAN/')
+    system2('chmod 755 tmpdeb/DEBIAN/*')
     md5_file_folder("tmpdeb/")
     system2('dpkg-deb -b tmpdeb rustdesk.deb;')
 
@@ -1165,6 +1167,7 @@ def main():
                 system2(
                     'cp res/rustdesk-link.desktop tmpdeb/usr/share/applications/rustdesk-link.desktop')
                 os.system('cp -a DEBIAN/* tmpdeb/DEBIAN/')
+                system2('chmod 755 tmpdeb/DEBIAN/*')
                 system2('strip tmpdeb/usr/bin/rustdesk')
                 system2('mkdir -p tmpdeb/usr/share/rustdesk')
                 system2('mv tmpdeb/usr/bin/rustdesk tmpdeb/usr/share/rustdesk/')
