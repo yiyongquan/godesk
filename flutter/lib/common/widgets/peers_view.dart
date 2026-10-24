@@ -192,10 +192,10 @@ class _PeersViewState extends State<_PeersView>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.sentiment_very_dissatisfied_rounded,
-                  color: Theme.of(context).tabBarTheme.labelColor,
-                  size: 40,
-                ).paddingOnly(bottom: 10),
+                  Icons.devices_outlined,
+                  color: Theme.of(context).tabBarTheme.labelColor?.withOpacity(0.5),
+                  size: 44,
+                ).paddingOnly(bottom: 12),
                 Text(
                   translate(
                     _emptyMessages[widget.peers.loadEvent] ?? 'Empty',
