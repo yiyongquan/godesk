@@ -2967,8 +2967,8 @@ class ServerConfig {
 
   /// from local options
   ServerConfig.fromOptions(Map<String, dynamic> options)
-      : idServer = options['custom-rendezvous-server'] ?? "go.ab2026.top",
-        relayServer = options['relay-server'] ?? "go.ab2026.top",
+      : idServer = options['custom-rendezvous-server'] ?? "home.aitime.top",
+        relayServer = options['relay-server'] ?? "home.aitime.top",
         apiServer = options['api-server'] ?? "https://go.ab2026.top",
         key = options['key'] ?? "78B0XIob28tJ0EE6a42uYx7kjspKqeYgJFFXvrZSk+I=";
 }

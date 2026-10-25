@@ -114,7 +114,7 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["go.ab2026.top"];
+pub const RENDEZVOUS_SERVERS: &[&str] = &["home.aitime.top"];
 pub const RS_PUB_KEY: &str = "78B0XIob28tJ0EE6a42uYx7kjspKqeYgJFFXvrZSk+I=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
