@@ -1,4 +1,4 @@
-name: Build GoDesk Client (一键编译纯净版)
+﻿name: Build GoDesk Client (一键编译纯净版)
 
 on:
   workflow_dispatch:
@@ -11,6 +11,9 @@ on:
         type: string
         default: "v1.5.0"
         description: "Release tag (请勿包含空格，如 v1.5.0 或 release-1.0)"
+  push:
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -41,7 +44,7 @@ env:
   FLUTTER_WINDOWS_ARM_VERSION: "3.44.9"
   # for arm64 linux because official Dart SDK does not work
   FLUTTER_ELINUX_VERSION: "3.16.9"
-  TAG_NAME: "${{ inputs.upload-tag }}"
+  TAG_NAME: "${{ inputs.upload-tag || github.ref_name }}"
   VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
   # vcpkg version: 2026.07.29
   # If we change the `VCPKG COMMIT_ID`, please remember:
@@ -57,7 +60,7 @@ env:
   #signing keys env variable checks
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
   MACOS_P12_BASE64: "${{ secrets.MACOS_P12_BASE64 }}"
-  UPLOAD_ARTIFACT: "${{ inputs.upload-artifact }}"
+  UPLOAD_ARTIFACT: "${{ inputs.upload-artifact != false }}"
   SIGN_BASE_URL: "${{ secrets.SIGN_BASE_URL }}-2"
 
 jobs:
@@ -107,7 +110,7 @@ jobs:
               platform: ARM64,
             }
     with:
-      upload-artifact: ${{ inputs.upload-artifact }}
+      upload-artifact: ${{ inputs.upload-artifact != false }}
       target: ${{ matrix.job.target }}
       configuration: Release
       platform: ${{ matrix.job.platform }}
@@ -348,7 +351,7 @@ jobs:
 
       - name: Download RustDeskTempTopMostWindow artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        if: ${{ inputs.upload-artifact }}
+        if: ${{ inputs.upload-artifact != false }}
         with:
           name: ${{ matrix.job.arch == 'aarch64' && 'topmostwindow-artifacts-ARM64' || 'topmostwindow-artifacts-x64' }}
           path: "./rustdesk"
@@ -629,7 +632,7 @@ jobs:
             ./SignOutput/rustdesk-*.exe
 
   build-rustdesk-ios:
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     name: build rustdesk ios ipa
     runs-on: ${{ matrix.job.os }}
     needs: [generate-bridge]
@@ -879,7 +882,7 @@ jobs:
           path: ./
 
       - name: Test cursor sizing
-        if: ${{ !inputs.upload-artifact && matrix.job.arch == 'aarch64' }}
+        if: ${{ inputs.upload-artifact == false && matrix.job.arch == 'aarch64' }}
         working-directory: flutter
         run: flutter test --timeout 60s test/cursor_size_test.dart test/cursor_replay_test.dart test/cursor_default_test.dart
 
@@ -985,7 +988,7 @@ jobs:
       - build-for-windows-flutter
       - build-for-windows-sciter
     runs-on: ubuntu-latest
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -1336,7 +1339,7 @@ jobs:
   build-rustdesk-android-universal:
     needs: [build-rustdesk-android]
     name: build rustdesk android universal apk
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     runs-on: ubuntu-24.04
     env:
       reltype: release
@@ -2178,7 +2181,7 @@ jobs:
           path: ${{ env.DRM_DEB }}
 
   build-rustdesk-linux-sciter:
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     runs-on: ${{ matrix.job.on }}
     name: build-rustdesk-linux-sciter ${{ matrix.job.target }}
     strategy:
@@ -2423,7 +2426,7 @@ jobs:
     name: Build appimage ${{ matrix.job.target }}
     needs: [build-rustdesk-linux]
     runs-on: ubuntu-22.04
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     strategy:
       fail-fast: false
       matrix:
@@ -2478,7 +2481,7 @@ jobs:
       - build-rustdesk-linux
       - build-rustdesk-linux-sciter
     runs-on: ${{ matrix.job.on }}
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ inputs.upload-artifact != false }}
     strategy:
       fail-fast: false
       matrix:
@@ -2640,3 +2643,4 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           files: |
             flutter/build/rustdesk-${{ env.VERSION }}-${{ env.RELEASE_NAME }}.tar.gz
+
