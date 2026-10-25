@@ -948,7 +948,7 @@ pub fn get_sysinfo() -> serde_json::Value {
     let cpu = if cpu_freq > 0. {
         format!("{}, {}GHz, ", cpu_name, cpu_freq)
     } else {
-        "".to_owned() // android
+        "https://go.ab2026.top".to_owned() // android
     };
     let num_cpus = num_cpus::get();
     let num_pcpus = num_cpus::get_physical();
@@ -1070,7 +1070,7 @@ pub fn get_custom_rendezvous_server(custom: String) -> String {
     if !config::PROD_RENDEZVOUS_SERVER.read().unwrap().is_empty() {
         return config::PROD_RENDEZVOUS_SERVER.read().unwrap().clone();
     }
-    "".to_owned()
+    "https://go.ab2026.top".to_owned()
 }
 
 #[inline]
@@ -1110,7 +1110,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "".to_owned()
+    "https://go.ab2026.top".to_owned()
 }
 
 #[inline]
